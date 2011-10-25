@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +33,9 @@ public class Board
 
     public byte[] candidatesFor(int x, int y)
     {
+        if(board[y][x] != 0)
+            return new byte[0];
+
         final Set<Byte> space = elementSpace();
 
         for(int i = 0; i < board.length; i++)
@@ -46,5 +50,30 @@ public class Board
             result[i++] = b;
 
         return result;
+    }
+
+    public byte[] findNextCandidate()
+    {
+        int min = board.length;
+        byte[] cell = null;
+
+        for(int x = 0; x < board.length; x++)
+        {
+            for(int y = 0; y < board.length; y++)
+            {
+                final byte[] c = candidatesFor(x, y);
+                if(c.length > 0 && min > c.length)
+                {
+                    cell = new byte[]{(byte) x, (byte) y};
+                    min = c.length;
+
+                    if(min == 1)
+                    {
+                        return cell;
+                    }
+                }
+            }
+        }
+        return cell;
     }
 }

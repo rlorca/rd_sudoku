@@ -12,6 +12,16 @@ public class Solver
 {
     public Board solve(Board src)
     {
+        /*
+
+
+        Board src.solveRow(0, seed);
+
+
+
+        src.row(0);
+
+
         final byte[][] board = src.board();
 
         final Set<Byte> elementSpace = null; //createSpace(board[0].length);
@@ -26,8 +36,9 @@ public class Solver
 
             result[i] = fillRow(row, rowComplement);
         }
+        */
 
-        return new Board(result);
+        return new Board(null);
     }
 
     private byte[] fillRow(byte[] row, Queue<Byte> rowComplement)

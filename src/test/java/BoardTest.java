@@ -1,6 +1,8 @@
 import org.junit.Test;
 import sun.text.normalizer.IntTrie;
 
+import java.util.Set;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class BoardTest
 {
 
-    private byte[][] complexInitial = new byte[][]{ {0, 4, 0, 1},
+    private byte[][] complexInitial = new byte[][]{ {3, 4, 0, 1},
                                                     {0, 0, 3, 0},
                                                     {2, 0, 0, 0},
                                                     {0, 0, 1, 0}};
@@ -21,30 +23,33 @@ public class BoardTest
     @Test
     public void space()
     {
-        byte[][] initial = {{0, 1}, {0, 0}};
+        final Set<Byte> bytes = complexBoard.elementSpace();
 
-        byte[] expected = {1, 2};
+        final byte[] elements = {1, 2, 3, 4};
 
-        Board board = new Board(initial);
+        assertEquals(elements.length, bytes.size());
 
-        assertEquals(2, board.elementSpace().size());
-
-        for (byte b : expected)
-            assertTrue(board.elementSpace().contains(b));
+        for (byte b : elements)
+            assertTrue(bytes.contains(b));
 
     }
 
     @Test
     public void candidates()
     {
-        assertArrayEquals(new byte[]{3}, complexBoard.candidatesFor(0, 0));
+        assertArrayEquals(new byte[]{2}, complexBoard.candidatesFor(2, 0));
         assertArrayEquals(new byte[]{3, 4}, complexBoard.candidatesFor(3, 2));
+        assertArrayEquals(new byte[0], complexBoard.candidatesFor(1, 0));
     }
 
     @Test
     public void nextCell()
     {
-        //byte[] cell = complexBoard.findNextCandidate();
+        byte[] cell = complexBoard.findNextCandidate();
+
+        assertArrayEquals(new byte[] {0, 3}, cell);
     }
+
+
 
 }
