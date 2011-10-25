@@ -20,7 +20,7 @@ public class BoardTest
     @Test
     public void space()
     {
-        final Set<Byte> bytes = complexBoard.elementSpace();
+        final Set<Byte> bytes = complexBoard.possibleValues();
 
         final byte[] elements = {1, 2, 3, 4};
 
@@ -46,7 +46,7 @@ public class BoardTest
         assertEquals(0, cell.x);
         assertEquals(3, cell.y);
         assertTrue(cell.isOptimum());
-        assertEquals(1, cell.getCandidateValues().length);
+        assertEquals(1, cell.possibleValues().length);
     }
 
     @Test
@@ -54,9 +54,9 @@ public class BoardTest
     {
         Board.Cell cell = complexBoard.findNextCandidate();
 
-        byte[] cv = cell.getCandidateValues();
+        byte[] cv = cell.possibleValues();
 
-        Board newBoard = cell.setValue(cv[0]);
+        Board newBoard = cell.modify(cv[0]);
 
         final Board.Cell nextCell = newBoard.findNextCandidate();
 

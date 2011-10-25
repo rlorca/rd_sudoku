@@ -1,8 +1,5 @@
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
-import javax.xml.parsers.SAXParser;
-import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,13 +8,6 @@ import java.util.Set;
  */
 public class Board
 {
-    private final byte[][] board;
-
-    public Board(byte[][] b)
-    {
-        this.board = b;
-    }
-
     public class Cell
     {
         private final byte[] candidates;
@@ -36,22 +26,33 @@ public class Board
             return candidates.length == 1;
         }
 
-        public Board setValue(byte value)
+        public Board modify(byte value)
         {
             byte[][] result = Arrays.copyOf(board, board.length);
             result[y][x] = value;
             return new Board(result);
         }
 
-        public byte[] getCandidateValues()
+        public byte[] possibleValues()
         {
             return candidates;
         }
 
-        public int rate()
+        public int weight()
         {
             return candidates.length == 0 ? Integer.MAX_VALUE : candidates.length;
         }
+    }
+
+    private final Set<Byte> valueUniverse;
+
+    private final byte[][] board;
+
+    public Board(byte[][] b)
+    {
+        this.board = b;
+
+        this.valueUniverse = Collections.unmodifiableSet(possibleValues());
     }
 
     public byte[][] board()
@@ -71,7 +72,7 @@ public class Board
         return true;
     }
 
-    public Set<Byte> elementSpace()
+    public Set<Byte> possibleValues()
     {
         HashSet<Byte> result = new HashSet<Byte>(board.length);
 
@@ -88,7 +89,7 @@ public class Board
         if(board[y][x] != 0)
             return new byte[0];
 
-        final Set<Byte> space = elementSpace();
+        final Set<Byte> space = new HashSet<Byte>(valueUniverse);
 
         for(int i = 0; i < board.length; i++)
         {
@@ -114,7 +115,7 @@ public class Board
             {
                 Cell tmp = new Cell(x, y);
 
-                if(tmp.rate() < cell.rate())
+                if(tmp.weight() < cell.weight())
                 {
                     cell = tmp;
 

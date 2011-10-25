@@ -1,12 +1,6 @@
-import sun.reflect.generics.tree.ReturnType;
-
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
-
 /**
- * Responsibilities?
+ * This is the external facade.
+ *
  */
 public class Solver
 {
@@ -18,9 +12,9 @@ public class Solver
         {
             final Board.Cell next = b.findNextCandidate();
 
-            final byte[] candidates = next.getCandidateValues();
+            final byte[] candidates = next.possibleValues();
 
-            b = next.setValue(candidates[0]);
+            b = next.modify(candidates[0]);
         }
 
         System.out.println(b);
