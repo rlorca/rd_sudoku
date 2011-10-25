@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.xml.parsers.SAXParser;
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -19,15 +20,15 @@ public class Board
 
     public class Cell
     {
-
         private final byte[] candidates;
         final int x, y;
 
-        public Cell(int x, int y, byte[] candidates)
+        public Cell(int x, int y)
         {
-            this.candidates = candidates;
             this.x = x;
             this.y = y;
+
+            this.candidates = candidatesFor(x, y);
         }
 
         public boolean isOptimum()
@@ -42,11 +43,17 @@ public class Board
             return new Board(result);
         }
 
-        public byte[] getCandidateValues() {
+        public byte[] getCandidateValues()
+        {
             return candidates;
         }
 
+        public int rate()
+        {
+            return candidates.length == 0 ? Integer.MAX_VALUE : candidates.length;
+        }
     }
+
     public byte[][] board()
     {
         return this.board;
@@ -99,18 +106,17 @@ public class Board
 
     public Cell findNextCandidate()
     {
-        int min = board.length;
-        Cell cell = null;
+        Cell cell = new Cell(0, 0);
 
         for(int x = 0; x < board.length; x++)
         {
             for(int y = 0; y < board.length; y++)
             {
-                final byte[] candidates = candidatesFor(x, y);
-                if(candidates.length > 0 && min > candidates.length)
+                Cell tmp = new Cell(x, y);
+
+                if(tmp.rate() < cell.rate())
                 {
-                    cell = new Cell(x, y, candidates);
-                    min = candidates.length;
+                    cell = tmp;
 
                     if(cell.isOptimum())
                         return cell;
