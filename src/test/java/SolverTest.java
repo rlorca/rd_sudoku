@@ -18,4 +18,17 @@ public class SolverTest
 
         assertArrayEquals(pos, solution.board());
     }
+
+    @Test
+    public void board2x2()
+    {
+        byte[][] initial = {{0, 1}, {0, 0}};
+
+        byte[][] solution = {{2, 1}, {1, 2}};
+
+        Board result = new Solver().solve(new Board(initial));
+
+        assertArrayEquals(solution, result.board());
+    }
+
 }
