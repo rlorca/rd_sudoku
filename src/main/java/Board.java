@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,9 +16,39 @@ public class Board
         this.board = b;
     }
 
+    public class Cell
+    {
+        private final byte[] candidates;
+
+        final int x, y;
+
+        public Cell(int x, int y, byte[] candidates)
+        {
+            this.candidates = candidates;
+            this.x = x;
+            this.y = y;
+        }
+
+        public boolean isOptimum()
+        {
+            return candidates.length == 1;
+        }
+
+        public Board setValue(byte value)
+        {
+            byte[][] result = Arrays.copyOf(board, board.length);
+            result[y][x] = value;
+            return new Board(result);
+        }
+
+        public byte[] getCandidateValues() {
+            return candidates;
+        }
+    }
+
     public byte[][] board()
     {
-        return board;
+        return this.board;
     }
 
     public Set<Byte> elementSpace()
@@ -52,25 +84,23 @@ public class Board
         return result;
     }
 
-    public byte[] findNextCandidate()
+    public Cell findNextCandidate()
     {
         int min = board.length;
-        byte[] cell = null;
+        Cell cell = null;
 
         for(int x = 0; x < board.length; x++)
         {
             for(int y = 0; y < board.length; y++)
             {
-                final byte[] c = candidatesFor(x, y);
-                if(c.length > 0 && min > c.length)
+                final byte[] candidates = candidatesFor(x, y);
+                if(candidates.length > 0 && min > candidates.length)
                 {
-                    cell = new byte[]{(byte) x, (byte) y};
-                    min = c.length;
+                    cell = new Cell(x, y, candidates);
+                    min = candidates.length;
 
-                    if(min == 1)
-                    {
+                    if(cell.isOptimum())
                         return cell;
-                    }
                 }
             }
         }

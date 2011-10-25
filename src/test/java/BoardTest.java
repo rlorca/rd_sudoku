@@ -1,5 +1,4 @@
 import org.junit.Test;
-import sun.text.normalizer.IntTrie;
 
 import java.util.Set;
 
@@ -45,11 +44,26 @@ public class BoardTest
     @Test
     public void nextCell()
     {
-        byte[] cell = complexBoard.findNextCandidate();
+        Board.Cell cell = complexBoard.findNextCandidate();
 
-        assertArrayEquals(new byte[] {0, 3}, cell);
+        assertEquals(0, cell.x);
+        assertEquals(3, cell.y);
+        assertTrue(cell.isOptimum());
+        assertEquals(1, cell.getCandidateValues().length);
     }
 
+    @Test
+    public void move()
+    {
+        Board.Cell cell = complexBoard.findNextCandidate();
 
+        byte[] cv = cell.getCandidateValues();
 
+        Board newBoard = cell.setValue(cv[0]);
+
+        final Board.Cell nextCell = newBoard.findNextCandidate();
+
+        assertEquals(0, nextCell.x);
+        assertEquals(1, nextCell.y);
+    }
 }
