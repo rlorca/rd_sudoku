@@ -10,59 +10,21 @@ import java.util.Set;
  */
 public class Solver
 {
-    public Board solve(Board src)
+    public byte[][] solve(byte[][] src)
     {
-        /*
+        Board b = new Board(src);
 
-
-        Board src.solveRow(0, seed);
-
-
-
-        src.row(0);
-
-
-        final byte[][] board = src.board();
-
-        final Set<Byte> elementSpace = null; //createSpace(board[0].length);
-
-        byte[] row = board[0];
-
-        byte[][] result = new byte[board.length][row.length];
-
-        for(int i = 0; i < board.length; i++)
+        while(!b.isSolved())
         {
-            Queue<Byte> rowComplement = complementOf(row, elementSpace);
+            final Board.Cell next = b.findNextCandidate();
 
-            result[i] = fillRow(row, rowComplement);
+            final byte[] candidates = next.getCandidateValues();
+
+            b = next.setValue(candidates[0]);
         }
-        */
 
-        return new Board(null);
+        System.out.println(b);
+
+        return b.board();
     }
-
-    private byte[] fillRow(byte[] row, Queue<Byte> rowComplement)
-    {
-        for(int i = 0; i < row.length; i++)
-        {
-            if(row[i] == 0)
-            {
-                row[i] = rowComplement.poll();
-            }
-        }
-        return row;
-    }
-
-    private Queue<Byte> complementOf(byte[] target, Set<Byte> space)
-    {
-        HashSet<Byte> result = new HashSet<Byte>(space);
-
-        for(byte b : target)
-            result.remove(b);
-
-        return new LinkedList(result);
-    }
-
-
-
 }

@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.xml.parsers.SAXParser;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -9,7 +10,7 @@ import java.util.Set;
  */
 public class Board
 {
-    private byte[][] board;
+    private final byte[][] board;
 
     public Board(byte[][] b)
     {
