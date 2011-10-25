@@ -6,23 +6,23 @@ import java.util.Set;
  */
 public class Board
 {
-    private byte[][] b;
+    private byte[][] board;
 
     public Board(byte[][] b)
     {
-        this.b = b;
+        this.board = b;
     }
 
     public byte[][] board()
     {
-        return b;
+        return board;
     }
 
     public Set<Byte> elementSpace()
     {
-        HashSet<Byte> result = new HashSet<Byte>(b.length);
+        HashSet<Byte> result = new HashSet<Byte>(board.length);
 
-        for(byte i = 1; i <= b.length; i++)
+        for(byte i = 1; i <= board.length; i++)
         {
             result.add(i);
         }
@@ -30,4 +30,21 @@ public class Board
         return result;
     }
 
+    public byte[] candidatesFor(int x, int y)
+    {
+        final Set<Byte> space = elementSpace();
+
+        for(int i = 0; i < board.length; i++)
+        {
+            space.remove(board[y][i]);
+            space.remove(board[i][x]);
+        }
+
+        byte[] result = new byte[space.size()];
+        int i = 0;
+        for(Byte b : space)
+            result[i++] = b;
+
+        return result;
+    }
 }
