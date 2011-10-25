@@ -18,8 +18,8 @@ public class Board
 
     public class Cell
     {
-        private final byte[] candidates;
 
+        private final byte[] candidates;
         final int x, y;
 
         public Cell(int x, int y, byte[] candidates)
@@ -44,11 +44,23 @@ public class Board
         public byte[] getCandidateValues() {
             return candidates;
         }
-    }
 
+    }
     public byte[][] board()
     {
         return this.board;
+    }
+
+    public boolean isSolved()
+    {
+        for(byte[] rows : board)
+        {
+            for(byte b : rows)
+            {
+                if(b == 0) return false;
+            }
+        }
+        return true;
     }
 
     public Set<Byte> elementSpace()
@@ -105,5 +117,22 @@ public class Board
             }
         }
         return cell;
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder buffer = new StringBuilder(1000);
+
+        for(byte[] row : board)
+        {
+            for(byte b : row)
+            {
+                buffer.append(',').append(b);
+            }
+            buffer.append('\n');
+        }
+
+        return buffer.toString();
     }
 }

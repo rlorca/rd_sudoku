@@ -2,9 +2,7 @@ import org.junit.Test;
 
 import java.util.Set;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Responsibilities?
@@ -66,4 +64,32 @@ public class BoardTest
         assertEquals(0, nextCell.x);
         assertEquals(1, nextCell.y);
     }
+
+    @Test
+    public void solving()
+    {
+        assertFalse(complexBoard.isSolved());
+
+        Board simpleBoard = new Board(new byte[][]{{1,2}, {2,1}});
+
+        assertTrue(simpleBoard.isSolved());
+    }
+
+    @Test(timeout = 1000)
+    public void solver()
+    {
+        Board b = complexBoard;
+
+        while(!b.isSolved())
+        {
+            final Board.Cell next = b.findNextCandidate();
+
+            final byte[] candidates = next.getCandidateValues();
+
+            b = next.setValue(candidates[0]);
+        }
+
+        System.out.println(b.toString());
+    }
+
 }
